@@ -19,6 +19,8 @@ app.use(passport.session())
 app.use(express.urlencoded({ extended: false }));
 
 var MySqlConnection = sqlConnection();
+
+//Checking MYSQL connection
 MySqlConnection.connect((err)=> {
 	if(!err)
 		console.log('Connection Established Successfully');
@@ -26,19 +28,23 @@ MySqlConnection.connect((err)=> {
 		console.log('Connection Failed!'+ JSON.stringify(err,undefined,2));
 });
 
+//Importing routes files
 const homeRoute = require('./routes/home')
 const authRoute = require('./routes/auth')
 const callbackRoute = require('./routes/callback')
 
+//Authorisation Failure
 app.get('/fail', (req, res)=>{
-  res.send('<h1>Failure</h1>')
+  res.send('<h1>Authorization Failure</h1>')
 })
 
+//Defining Routes
 app.use('/home', homeRoute)
 app.use('/auth/google',authRoute)
 app.use('/auth/google/callback',callbackRoute
 )
 
+//Server listens from here
 app.listen(3000||process.env.PORT, ()=>{
 	console.log(`Server is listening at port ${3000||process.env.PORT}`)
 })
