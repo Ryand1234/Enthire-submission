@@ -8,7 +8,7 @@ const userAuthorize = async (req, res, next) => {
     next();
   }
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err || user.role != 'manual') {
+    if (err) {
       res.status(401);
     }
     req.user = user;

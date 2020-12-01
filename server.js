@@ -1,4 +1,5 @@
 const sqlConnection = require('./utils/db')
+const cors = require('cors')
 const express = require('express')
 const bodyparser = require('body-parser')
 require('dotenv').config()
@@ -12,6 +13,7 @@ var app = express()
 pass(passport)
 app.use(bodyparser.json())
 app.use(express.json())
+app.use(cors())
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(express.urlencoded({ extended: false }));
@@ -28,7 +30,7 @@ const homeRoute = require('./routes/home')
 const authRoute = require('./routes/auth')
 const callbackRoute = require('./routes/callback')
 
-app.use('/fail', (req, res)=>{
+app.get('/fail', (req, res)=>{
   res.send('<h1>Failure</h1>')
 })
 
