@@ -1,9 +1,10 @@
 const mySqlConnection = require('../utils/db');
 const router = require('express').Router();
-const middleware = require('../middleware/middleware');
+const userAuthorize = require('../middleware/middleware');
 
-router.get('/home', async(req, res)=>{
-
+router.get('/home', userAuthorize, async(req, res)=>{
+	req.status(200);
+	req.json({user: req.user});
 })
 
 module.exports = router;

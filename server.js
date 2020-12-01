@@ -2,12 +2,18 @@ const sqlConnection = require('./utils/db')
 const express = require('express')
 const bodyparser = require('body-parser')
 require('dotenv').config()
+const passport = require('passport')
+var createError = require('http-errors')
+var pass = require('./lib/passport')
 
 var app = express()
 
 //Configuring express server
+pass(passport)
 app.use(bodyparser.json())
 app.use(express.json())
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(express.urlencoded({ extended: false }));
 
 var MySqlConnection = sqlConnection();
@@ -19,10 +25,17 @@ MySqlConnection.connect((err)=> {
 });
 
 const homeRoute = require('./routes/home')
-const createRoute = require('./routes/create')
+const authRoute = require('./routes/auth')
+const callbackRoute = require('./routes/callback')
+
+app.use('/fail', (req, res)=>{
+  res.send('<h1>Failure</h1>')
+})
 
 app.use('/home', homeRoute)
-app.use('/create', createRoute)
+app.use('/auth/google',authRoute)
+app.use('/auth/google/callback',callbackRoute
+)
 
 app.listen(3000||process.env.PORT, ()=>{
 	console.log(`Server is listening at port ${3000||process.env.PORT}`)
