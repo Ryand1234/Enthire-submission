@@ -13,6 +13,7 @@
 
 ## Dependencies
 Axios: To make API calls to backend
+
 Bulma: For CSS
 
 ## How to run this project
